@@ -51,6 +51,26 @@ class DBStorage:
                     new_dict[key] = obj
         return (new_dict)
 
+    def get(self, cls, id):
+        """
+        Retrieves one obj if it exists
+        """
+        cls_dict = self.all(cls)
+        for key, value in cls_dict.items():
+            obj = cls + '.' + id
+            if key == obj:
+                return(value)
+        return(None)
+
+    def count(self, cls=None):
+        """
+        counts the num of objects in particular class
+        """
+        cnt = 0
+        cls_dict = self.all(cls)
+        cnt = len(cls_dict)
+        return(cnt)
+
     def new(self, obj):
         """add the object to the current database session"""
         self.__session.add(obj)
