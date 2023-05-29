@@ -9,7 +9,7 @@ from models.amenity import Amenity
 from os import getenv
 
 
-@app_views.route('/places/<place_id>/amenities', methods=['GET'])
+@app_views.route('/places/<place_id>/amenities', methods=['GET'], strict_slashes=False)
 def place_allAmenities(place_id):
     place = storage.get('Place', place_id)
     if not place:
@@ -19,7 +19,7 @@ def place_allAmenities(place_id):
     return jsonify([a.to_dict() for a in place.amenities])
 
 @app_views.route('/places/<place_id>/amenities/<amenity_id>',
-        methods=['DELETE', 'POST'])
+        methods=['DELETE', 'POST'], strict_slashes=False)
 def place_amenity(place_id, amenity_id):
     a = storage.get('Amenity', amenity_id)
     p = storage.get('Place', place_id)

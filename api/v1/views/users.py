@@ -9,14 +9,14 @@ from models.state import State
 from models.user import User
 
 
-@app_views.route('/users', methods=['GET', 'POST'])
+@app_views.route('/users', methods=['GET', 'POST'], strict_slashes=False)
 def all_users():
     """all users GET & POST methods
     get returns all users
     post adds user object and saves it
     """
     if request.method == 'GET':
-        return jsonify(user.to_dict()
+        return jsonify([user.to_dict()
                 for user in storage.all('User').values()])
 
     if request.method == 'POST':
@@ -31,7 +31,7 @@ def all_users():
 
         return make_response(jsonify(new_u.to_dict()), 201)
 
-@app_views.route('/users/<user_id>', methods=['GET', 'DELETE', 'PUT'])
+@app_views.route('/users/<user_id>', methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
 def user(user_id):
     """GET / DELETE/ PUT method for User w/ specific ID
     if user_id passed doesnt exist, 404 error
@@ -57,7 +57,7 @@ def user(user_id):
             abort(400, "Not a JSON")
         for key, value in request.get_json().items():
             if key not in ["id", "email", "created_at", "updated_at"]:
-                setattr(user, key value)
+                setattr(user, key, value)
         user.save()
         return make_response(jsonify(user.to_dict()), 200)
 

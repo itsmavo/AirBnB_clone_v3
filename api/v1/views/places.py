@@ -9,7 +9,7 @@ from models.city import City
 from models.place import Place
 
 
-@app_views.route('/places/<place_id>', methods=['GET', 'DELETE', 'PUT'])
+@app_views.route('/places/<place_id>', methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
 def getPlace(place_id):
     """ Gets Place """
     place = storage.get('Place', place_id)
@@ -36,7 +36,7 @@ def getPlace(place_id):
         return jsonify(place.to_dict()), 200
 
 
-@app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'])
+@app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'], strict_slashes=False)
 def places(city_id):
     """gets places"""
     city = storage.get('City', city_id)
@@ -60,7 +60,7 @@ def places(city_id):
         new_p.save()
         return jsonify(new_p.to_dict()), 201
 
-@app_views.route('/places_search', methods=['POST'])
+@app_views.route('/places_search', methods=['POST'], strict_slashes=False)
 def places_search():
     headers = request.headers.get('Content-Type')
     if headers != 'application/json':

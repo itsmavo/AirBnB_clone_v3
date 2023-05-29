@@ -8,11 +8,11 @@ from models import storage
 from models.amenity import Amenity
 
 
-@app_views.route('/amenities', methods=['GET', 'POST'])
+@app_views.route('/amenities', methods=['GET', 'POST'], strict_slashes=False)
 def all_amenities():
     if request.method == 'GET':
         return jsonify([a.to_dict()
-                        for a in storage.all('Amenity').values()])
+                        for a in storage.all(Amenity).values()])
     if request.method == 'POST':
         if not request.json:
             abort(400, 'Not a JSON')
@@ -22,9 +22,9 @@ def all_amenities():
         new_a.save()
         return make_response(jsonify(new_A.to_dict()), 201)
 
-@app_views.route('/amenities/<amenity_id>', methods=['GET', 'DELETE', 'PUT'])
+@app_views.route('/amenities/<amenity_id>', methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
 def amenity(amenity_id):
-    a = storage.get('Amenity', amenity_id)
+    a = storage.get(Amenity, amenity_id)
 
     if not a:
         abort(404)

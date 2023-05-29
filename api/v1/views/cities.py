@@ -2,16 +2,17 @@
 """
 cities path handler
 """
-from flask import request, jsonify, abort
+from flask import request, jsonify, abort, make_response
 from api.v1.views import app_views
 from models import storage
 from models.state import State
 from models.city import City
 
 
-@app_views.route('/cities/<city_id>' methods=['GET', 'DELETE', 'PUT'])
+@app_views.route('/states/<state_id>/cities', methods=['GET', 'DELETE', 'PUT'],
+		strict_slashes=False)
 def city(city_id):
-    city = storage.get('City', city_id)
+    city = storage.get(City, city_id)
     if not city:
         abort (404)
 
@@ -21,7 +22,7 @@ def city(city_id):
     if request.method == 'DELETE':
         storage.delete(city)
         storage.save()
-        return jsonify({}), 200
+        return make_response(jsonify({}), 200)
 
     if request.method == 'PUT':
         if not request.json:
@@ -33,7 +34,7 @@ def city(city_id):
         return jsonify(city.to_dict()), 20
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET', 'POST'])
+@app_views.route('/states/<state_id>/cities', methods=['GET', 'POST'], strict_slashes=False)
 def cities_of_State(state_id):
     state = storage.get('State', state_id)
     if not state:
@@ -50,4 +51,4 @@ def cities_of_State(state_id):
         new_c = City(**request.get_json())
         new_c.state_id = state.id
         new_c.save()
-        return jsonify(new_c.to_dict()), 201
+        return make_response(jsonify(new_c.to_dict()), 201)

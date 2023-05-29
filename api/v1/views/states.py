@@ -9,11 +9,11 @@ from models.state import State
 from flasgger import swag_from
 
 
-@app_views.route('/states', methods=['GET', 'POST'])
+@app_views.route('/states', methods=['GET', 'POST'], strict_slashes=False)
 def all_states():
     if request.method == 'GET':
-        return jsonify([state.to_dict
-            for state in storage.all('State').values()])
+        return jsonify([state.to_dict()
+            for state in storage.all(State).values()])
 
     if request.method == 'POST':
         if not request.json:
@@ -25,7 +25,7 @@ def all_states():
         return make_response(jsonify(new_s.to_dict()), 201)
 
 
-@app_views.route('/states/<state_id>', methods=['GET', 'DELETE', 'PUT'])
+@app_views.route('/states/<state_id>', methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
 @swag_from('state.yml')
 def state(state_id):
     """parameters:
@@ -39,7 +39,7 @@ def state(state_id):
        responses:
           200:
             description: 'sucess'"""
-    state = storage.get('State', state_id)
+    state = storage.get(State, state_id)
 
     if not state:
         abort(404)

@@ -55,10 +55,9 @@ class DBStorage:
         """
         Retrieves one obj if it exists
         """
-        cls_dict = self.all(cls)
-        for key, value in cls_dict.items():
-            obj = cls + '.' + id
-            if key == obj:
+        cls_dict = models.storage.all(cls)
+        for value in cls_dict.values():
+            if (value.id == value):
                 return(value)
         return(None)
 
