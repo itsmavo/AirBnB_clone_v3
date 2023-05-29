@@ -7,7 +7,7 @@ from api.v1.views import app_views
 from models import storage
 from models.state import State
 from models.review import Review
-
+from models.place import Place
 
 @app_views.route('/places/<place_id>/reviews', methods=['GET', 'POST'], strict_slashes=False)
 def reviews_by_place(place_id):
