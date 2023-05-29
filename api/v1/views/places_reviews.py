@@ -12,7 +12,7 @@ from models.review import Review
 @app_views.route('/places/<place_id>/reviews', methods=['GET', 'POST'], strict_slashes=False)
 def reviews_by_place(place_id):
     """reviews by place"""
-    place = storage.get('Place', place_id)
+    place = storage.get(Place, place_id)
     if place is None:
         abort(404)
 
@@ -37,7 +37,7 @@ def reviews_by_place(place_id):
 @app_views.route('/reviews/<review_id>',methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
 def review(review_id):
 
-    review = storage.get('Review', review_id)
+    review = storage.get(Review, review_id)
     if review is None:
         abort(404)
 
@@ -47,7 +47,7 @@ def review(review_id):
     if request.method == 'DELETE':
         storage.delete(review)
         storage.save()
-        return jsonift({}), 200
+        return jsonify({}), 200
 
     if request.method == 'PUT':
         if not request.get_json():

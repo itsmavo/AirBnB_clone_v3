@@ -12,7 +12,7 @@ from models.place import Place
 @app_views.route('/places/<place_id>', methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
 def getPlace(place_id):
     """ Gets Place """
-    place = storage.get('Place', place_id)
+    place = storage.get(Place, place_id)
 
     if not place:
         abort(404)
@@ -39,7 +39,7 @@ def getPlace(place_id):
 @app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'], strict_slashes=False)
 def places(city_id):
     """gets places"""
-    city = storage.get('City', city_id)
+    city = storage.get(City, city_id)
     if not city:
         abort(404)
 
@@ -51,7 +51,7 @@ def places(city_id):
             abort(400, 'Not a JSON')
         if 'user_id' not in request.get_json():
             abort(400, 'Missing user_id')
-        if not storage.get('User', request.get_json()['user_id']):
+        if not storage.get(User, request.get_json()['user_id']):
             abort(404)
         if 'name' not in request.get_json():
             abort(400, 'Missing name')
@@ -68,7 +68,7 @@ def places_search():
 
     if not request.get_json():
         return jsonify([places.to_dict() for
-            places in storage.all('Place').values()])
+            places in storage.all(Place).values()])
 
     res = []
     places = []
@@ -79,7 +79,7 @@ def places_search():
     for key, value in obj.items():
         if key == 'states':
             for item in value:
-                state_obj = storage.get('State', item)
+                state_obj = storage.get(State, item)
                 for city in state_obj.cities:
                     res.append(city.id)
 
@@ -98,7 +98,7 @@ def places_search():
                     amenities.append(item)
 
     #create list of place id's from all cities
-    for place in storage.all('Place').values():
+    for place in storage.all(Place).values():
         if place.city_id in res:
             places.append(place.id)
 
@@ -106,9 +106,9 @@ def places_search():
     if places == [] and amenities != []:
         remove = []
         res = []
-        places = [place.id for place in storage.all('Place').values()]
+        places = [place.id for place in storage.all(Place).values()]
         for place in places:
-            obj = storage.get('Place', place)
+            obj = storage.get(Place, place)
             for a in obj.amenities:
                 if a.id not in amenities:
                     if place not in remove:
@@ -116,13 +116,13 @@ def places_search():
         for place in places:
             if place not in remove:
                 res.append(place)
-        return jsonify([storage.get('Place', obj).to_dict()
+        return jsonify([storage.get(Place, obj).to_dict()
             for obj in res])
 
     if amenities != []:
         for place in places:
-            obj = storage.get('Place', place)
+            obj = storage.get(Place, place)
             for amenity in amenities:
                 if amenity not in obj.amenities:
                     places.remove(place)
-    return jsonify([storage.get('Place', id).to_dict() for id in places])
+    return jsonify([storage.get(Place, id).to_dict() for id in places])

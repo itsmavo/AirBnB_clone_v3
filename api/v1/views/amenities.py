@@ -20,7 +20,7 @@ def all_amenities():
             abort(400, 'Missing name')
         new_a = Amenity(**request.get_json())
         new_a.save()
-        return make_response(jsonify(new_A.to_dict()), 201)
+        return make_response(jsonify(new_a.to_dict()), 201)
 
 @app_views.route('/amenities/<amenity_id>', methods=['GET', 'DELETE', 'PUT'], strict_slashes=False)
 def amenity(amenity_id):

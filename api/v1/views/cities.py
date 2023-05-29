@@ -22,7 +22,7 @@ def city(city_id):
     if request.method == 'DELETE':
         storage.delete(city)
         storage.save()
-        return make_response(jsonify({}), 200)
+        return jsonify({}), 200
 
     if request.method == 'PUT':
         if not request.json:
@@ -31,7 +31,7 @@ def city(city_id):
             if key not in ["id", "created_at", "updated_at"]:
                 setattr(city, key, value)
         city.save()
-        return jsonify(city.to_dict()), 20
+        return jsonify(city.to_dict()), 200
 
 
 @app_views.route('/states/<state_id>/cities', methods=['GET', 'POST'], strict_slashes=False)
@@ -51,4 +51,4 @@ def cities_of_State(state_id):
         new_c = City(**request.get_json())
         new_c.state_id = state.id
         new_c.save()
-        return make_response(jsonify(new_c.to_dict()), 201)
+        return jsonify(new_c.to_dict()), 201
