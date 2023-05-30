@@ -11,7 +11,6 @@ from flasgger.utils import swag_from
 
 @app_views.route('/places/<place_id>/reviews', methods=['GET'],
                  strict_slashes=False)
-@swag_from('documentation/reviews/get_reviews.yml', methods=['GET'])
 def get_reviews(place_id):
     """
     Retrieves the list of all Review objects of a Place
@@ -27,7 +26,6 @@ def get_reviews(place_id):
 
 
 @app_views.route('/reviews/<review_id>', methods=['GET'], strict_slashes=False)
-@swag_from('documentation/reviews/get_review.yml', methods=['GET'])
 def get_review(review_id):
     """
     Retrieves a Review object
@@ -60,7 +58,6 @@ def delete_review(review_id):
 
 @app_views.route('/places/<place_id>/reviews', methods=['POST'],
                  strict_slashes=False)
-@swag_from('documentation/reviews/post_reviews.yml', methods=['POST'])
 def post_review(place_id):
     """
     Creates a Review
@@ -92,7 +89,6 @@ def post_review(place_id):
 
 
 @app_views.route('/reviews/<review_id>', methods=['PUT'], strict_slashes=False)
-@swag_from('documentation/reviews/put_reviews.yml', methods=['PUT'])
 def put_review(review_id):
     """
     Updates a Review
