@@ -13,7 +13,6 @@ from flasgger.utils import swag_from
 
 @app_views.route('/cities/<city_id>/places', methods=['GET'],
                  strict_slashes=False)
-@swag_from('documentation/place/get_places.yml', methods=['GET'])
 def get_places(city_id):
     """
     Retrieves the list of all Place objects of a City
@@ -29,7 +28,6 @@ def get_places(city_id):
 
 
 @app_views.route('/places/<place_id>', methods=['GET'], strict_slashes=False)
-@swag_from('documentation/place/get_place.yml', methods=['GET'])
 def get_place(place_id):
     """
     Retrieves a Place object
@@ -62,7 +60,6 @@ def delete_place(place_id):
 
 @app_views.route('/cities/<city_id>/places', methods=['POST'],
                  strict_slashes=False)
-@swag_from('documentation/place/post_place.yml', methods=['POST'])
 def post_place(city_id):
     """
     Creates a Place
@@ -94,7 +91,6 @@ def post_place(city_id):
 
 
 @app_views.route('/places/<place_id>', methods=['PUT'], strict_slashes=False)
-@swag_from('documentation/place/put_place.yml', methods=['PUT'])
 def put_place(place_id):
     """
     Updates a Place
@@ -118,7 +114,6 @@ def put_place(place_id):
 
 
 @app_views.route('/places_search', methods=['POST'], strict_slashes=False)
-@swag_from('documentation/place/post_search.yml', methods=['POST'])
 def places_search():
     """
     Retrieves all Place objects depending of the JSON in the body
