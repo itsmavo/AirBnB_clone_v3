@@ -23,7 +23,7 @@ def getPlace(place_id):
     if request.method == 'DELETE':
         storage.delete(place)
         storage.save()
-        return jsonify({}), 200
+        return make_response(jsonify({}), 200)
 
     if request.method == 'PUT':
         if not request.get_json():
@@ -32,8 +32,8 @@ def getPlace(place_id):
             if key not in ["user_id", "city_id",
                     "id", "created_at", "updated_at"]:
                 setattr(place, key, value)
-        place.save()
-        return jsonify(place.to_dict()), 200
+        storage.save()
+        return make_response(jsonify(place.to_dict()), 200)
 
 
 @app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'], strict_slashes=False)
@@ -58,7 +58,7 @@ def places(city_id):
         new_p = Place(**request.get_json())
         new_p.city_id = city_id
         new_p.save()
-        return jsonify(new_p.to_dict()), 201
+        return make_response(jsonify(new_p.to_dict()), 201)
 
 @app_views.route('/places_search', methods=['POST'], strict_slashes=False)
 def places_search():
@@ -77,7 +77,7 @@ def places_search():
 
     #get all cities from states if state passed
     for key, value in obj.items():
-        if key == 'states':
+        if key == states:
             for item in value:
                 state_obj = storage.get(State, item)
                 for city in state_obj.cities:
@@ -85,14 +85,14 @@ def places_search():
 
     #add cities to existing cities list after looking states
     for key, value in obj.items():
-        if key == 'cities':
+        if key == cities:
             for item in value:
                 if item not in res:
                     res.append(item)
 
     #create amenities list of amenities passed
     for key, value in obj.items():
-        if key == 'amenities':
+        if key == amenities:
             for item in value:
                 if item not in res:
                     amenities.append(item)
